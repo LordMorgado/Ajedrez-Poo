@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_proyectopoo" default="compile.module.proyectopoo">
+  <dirname property="module.proyectopoo.basedir" file="${ant.file.module_proyectopoo}"/>
+  
+  <property name="module.jdk.home.proyectopoo" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.proyectopoo" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.proyectopoo" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.proyectopoo" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
+  
+  <property name="proyectopoo.output.dir" value="${module.proyectopoo.basedir}/out/production/ProyectoPoo"/>
+  <property name="proyectopoo.testoutput.dir" value="${module.proyectopoo.basedir}/out/test/ProyectoPoo"/>
+  
+  <path id="proyectopoo.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="proyectopoo.module.production.classpath">
+    <path refid="${module.jdk.classpath.proyectopoo}"/>
+  </path>
+  
+  <path id="proyectopoo.runtime.production.module.classpath">
+    <pathelement location="${proyectopoo.output.dir}"/>
+  </path>
+  
+  <path id="proyectopoo.module.classpath">
+    <path refid="${module.jdk.classpath.proyectopoo}"/>
+    <pathelement location="${proyectopoo.output.dir}"/>
+  </path>
+  
+  <path id="proyectopoo.runtime.module.classpath">
+    <pathelement location="${proyectopoo.testoutput.dir}"/>
+    <pathelement location="${proyectopoo.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.proyectopoo">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.proyectopoo">
+    <patternset refid="excluded.from.module.proyectopoo"/>
+  </patternset>
+  
+  <path id="proyectopoo.module.sourcepath">
+    <dirset dir="${module.proyectopoo.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.proyectopoo" depends="compile.module.proyectopoo.production,compile.module.proyectopoo.tests" description="Compile module ProyectoPoo"/>
+  
+  <target name="compile.module.proyectopoo.production" depends="register.custom.compilers" description="Compile module ProyectoPoo; production classes">
+    <mkdir dir="${proyectopoo.output.dir}"/>
+    <javac2 destdir="${proyectopoo.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.proyectopoo}/javac">
+      <compilerarg line="${compiler.args.proyectopoo}"/>
+      <bootclasspath refid="proyectopoo.module.bootclasspath"/>
+      <classpath refid="proyectopoo.module.production.classpath"/>
+      <src refid="proyectopoo.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.proyectopoo"/>
+    </javac2>
+    
+    <copy todir="${proyectopoo.output.dir}">
+      <fileset dir="${module.proyectopoo.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.proyectopoo.tests" depends="register.custom.compilers,compile.module.proyectopoo.production" description="compile module ProyectoPoo; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.proyectopoo" description="cleanup module">
+    <delete dir="${proyectopoo.output.dir}"/>
+    <delete dir="${proyectopoo.testoutput.dir}"/>
+  </target>
+</project>
