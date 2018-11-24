@@ -1,10 +1,9 @@
 package archivos;
 
-
-public class peones extends pieza implements  movimiento{
+public class caballos extends pieza implements movimiento {
     private int cantidadMovimientosRealizados;
-    public peones(String color, int n){
-        super("peon", color);
+    public caballos(String color, int n){
+        super("caballo", color);
         cantidadMovimientosRealizados = 0;
         if(color.equals("negro"))
             this.posicion = new int[]{n - 1, 1};
@@ -14,11 +13,7 @@ public class peones extends pieza implements  movimiento{
 
     @Override
     public void moverse() {
-        if(cantidadMovimientosRealizados == 0){
-            //Si no ha realiado movimiento, puede avanzar dos casillas al frente
-        }else{
-            //Solo puede moverse una casilla
-        }
+        //Movimiento en forma de L
         cantidadMovimientosRealizados++;
     }
 
